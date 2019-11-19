@@ -6,108 +6,205 @@
  * @flow
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
+  TextInput,
+  TouchableOpacity,
   Text,
-  StatusBar,
+  ImageBackground,
+  FlatList,
 } from 'react-native';
+import {Container, Content, Header, Body, Title, CheckBox} from 'native-base';
+import Icon from 'react-native-vector-icons/AntDesign';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import data from './Database/Database';
 
-const App: () => React$Node = () => {
+renderItemList = item => {
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
+    <View
+      style={{
+        flex: 1,
+        flexDirection: 'row',
+        paddingLeft: 10,
+        paddingRight: 10,
+        marginTop: 20,
+        marginBottom: 20,
+        width: 400,
+      }}>
+      <View style={{width: 50}}>
+        <CheckBox />
+      </View>
+      <View>
+        <Text style={{fontSize: 20, position: 'absolute'}}>
+          {item.item.task}
+        </Text>
+      </View>
+    </View>
+  );
+};
+
+renderList = () => {
+  console.log('====================================');
+  console.log(data);
+  console.log('====================================');
+  return (
+    <FlatList
+      data={data}
+      renderItem={renderItemList}
+      keyExtractor={item => item.task}
+    />
+  );
+};
+
+renderAdd = () => {
+  const [task, setTask] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  return (
+    <View style={{paddingLeft: 10, paddingRight: 10, marginBottom: 30}}>
+      <Text
+        style={{
+          fontWeight: 'bold',
+          color: '#fff',
+          marginBottom: 10,
+          fontSize: 20,
+        }}>
+        Add Task
+      </Text>
+      <View style={{flexDirection: 'row'}}>
+        <TextInput
+          placeholder="Add task...."
+          style={{
+            flex: 1,
+            padding: 10,
+            backgroundColor: '#CCC9C9',
+            opacity: 0.8,
+            borderTopLeftRadius: 10,
+            borderBottomLeftRadius: 10,
+          }}
+        />
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#366DFF',
+            borderTopRightRadius: 10,
+            borderBottomRightRadius: 10,
+          }}>
+          <Text
+            style={{
+              padding: 10,
+            }}>
+            Add
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+renderSearch = () => {
+  return (
+    <View style={{paddingLeft: 10, paddingRight: 10}}>
+      <Text
+        style={{
+          fontWeight: 'bold',
+          color: '#fff',
+          marginBottom: 10,
+          fontSize: 20,
+        }}>
+        Search
+      </Text>
+      <View style={{flexDirection: 'row'}}>
+        <TextInput
+          placeholder="Search task...."
+          style={{
+            flex: 1,
+            padding: 10,
+            backgroundColor: '#CCC9C9',
+            opacity: 0.8,
+            borderTopLeftRadius: 10,
+            borderBottomLeftRadius: 10,
+          }}
+        />
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#366DFF',
+            borderTopRightRadius: 10,
+            borderBottomRightRadius: 10,
+          }}>
+          <Text
+            style={{
+              padding: 10,
+            }}>
+            Search
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+const App = () => {
+  return (
+    <Container>
+      <ImageBackground
+        source={{
+          uri:
+            'https://i.pinimg.com/736x/91/06/21/9106217e59456dbc2593f74737f119c6.jpg',
+        }}
+        style={{width: '100%', height: '100%'}}>
+        <Header transparent>
+          <Body>
+            <Title style={{fontWeight: 'bold', fontSize: 30}}>Todo App</Title>
+          </Body>
+        </Header>
+        <View
+          style={{
+            padding: 20,
+            position: '',
+          }}>
+          <View>{renderAdd()}</View>
+          <View>{renderSearch()}</View>
+        </View>
+        <View
+          style={{
+            marginLeft: 10,
+            marginRight: 10,
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+            backgroundColor: '#E4E5E7',
+            opacity: 0.7,
+          }}>
+          <View
+            style={{
+              justifyContent: 'center',
+              width: '100%',
+              alignSelf: 'center',
+              alignItems: 'center',
+            }}>
+            <Text style={{padding: 10, fontSize: 20}}>List Todo</Text>
           </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
+        </View>
+        <View style={{paddingLeft: 10, paddingRight: 10}}>
+          <View
+            style={{
+              opacity: 0.5,
+              backgroundColor: '#E4E5E7',
+              width: '100%',
+              height: '100%',
+              position: 'relative',
+            }}></View>
+          <View style={{position: 'absolute'}}>{renderList()}</View>
+        </View>
+      </ImageBackground>
+    </Container>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  container: {
+    flex: 1,
   },
 });
 
