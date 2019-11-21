@@ -19,23 +19,28 @@ import {
 } from 'native-base';
 import Icon from 'react-native-vector-icons/AntDesign';
 
+// data
+import data from '../../Database/Database';
+
 AddTask = props => {
   const [task, setTask] = useState('');
 
+  // add task new
   const onAddTask = async () => {
     console.log('data: ', data);
-    let object = {task: task};
+    let object = {task: task, checked: false};
     data.push(object);
 
     try {
-      const ahbn = await AsyncStorage.setItem('keyData', JSON.stringify(data));
-      console.log('data: ', ahbn);
+      await AsyncStorage.setItem('keyData', JSON.stringify(data));
     } catch (err) {
       console.log('err');
     }
 
     setTask('');
-    props.navigation.goBack();
+
+    // add and back home
+    props.navigation.navigate('Home', {update: object});
   };
 
   return (
@@ -49,7 +54,7 @@ AddTask = props => {
           </TouchableOpacity>
         </Left>
         <Body>
-          <Title style={{fontWeight: 'bold', fontSize: 30}}>New task</Title>
+          <Title style={{fontWeight: 'bold', fontSize: 20}}>New task</Title>
         </Body>
         <Right></Right>
       </Header>

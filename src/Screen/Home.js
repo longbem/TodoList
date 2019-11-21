@@ -14,10 +14,12 @@ import {
   TouchableOpacity,
   Text,
   Image,
+  SafeAreaView,
   ImageBackground,
   FlatList,
   Alert,
   AsyncStorage,
+  ScrollView,
 } from 'react-native';
 import {
   Container,
@@ -28,37 +30,28 @@ import {
   Right,
   Title,
   CheckBox,
+  ListItem,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import ButtonAdd from '../Component/ButtonAdd';
-
-// data
+import ItemCard from './ItemCard';
+import ListTodo from '../Component/FlatList';
 import data from '../../Database/Database';
 
-// list item
-renderItemList = item => {
-  console.log('item: ', item);
-  return (
-    <View style={styles.boxListItem}>
-      <View style={{width: 50}}>
-        <CheckBox checked={false} />
-      </View>
-      <View>
-        <Text style={{fontSize: 20, position: 'absolute'}}>
-          {item.item.task}
-        </Text>
-      </View>
-    </View>
-  );
-};
+// // list item
+renderItemList = item => <ItemCard item={item} />;
 
 // list
-renderList = () => {
-  const [getData, setData] = useState();
+renderList = props => {
+  console.log('props: ', props);
 
+  const [getData, setData] = useState();
+  const [check, setCheck] = useState(false);
+  const [loading, setLoad] = useState(true);
+  // Get data
   useEffect(() => {
-    // Using an IIFE
+    setLoad(true);
     (async function _retrieveData() {
       try {
         const value = await AsyncStorage.getItem('keyData');
@@ -67,20 +60,36 @@ renderList = () => {
         setData(getValues);
         console.log('data: ', getData);
       } catch (error) {
-        // Error retrieving data
+        console.log('error');
       }
     })();
-  }, []);
+  }, [props.navigation.state.params ? props.navigation.state.params : null]);
 
   return (
-    <FlatList
-      data={getData}
-      renderItem={renderItemList}
-      keyExtractor={item => item.task}
-    />
+    <ScrollView>
+      <FlatList
+        data={getData}
+        renderItem={renderItemList}
+        keyExtractor={item => item.task}
+      />
+    </ScrollView>
   );
 };
 
+// toggleDone
+toggleDone = item => {
+  const [todos, setTodo] = useState();
+  todos = data;
+  todos = todos.map(todo => {
+    if (todo.task) {
+      todos.checked = !todo.checked;
+    }
+    return todo;
+  });
+  setTodo(todos);
+};
+
+// screen home
 const Home = props => {
   return (
     <Container>
@@ -96,7 +105,7 @@ const Home = props => {
           </TouchableOpacity>
         </Left>
         <Body>
-          <Title style={{fontWeight: 'bold', fontSize: 30}}>Todo App</Title>
+          <Title style={{fontWeight: 'bold', fontSize: 20}}>Todo App</Title>
         </Body>
         <Right>
           <TouchableOpacity onPress={() => props.navigation.navigate('Search')}>
@@ -140,7 +149,8 @@ const Home = props => {
           <Text style={{padding: 10, fontSize: 20}}>List Todo</Text>
         </View>
       </View>
-      <View>{renderList()}</View>
+      <View>{renderList(props)}</View>
+      {/* <ListTodo navigation={props} /> */}
       <View
         style={{
           position: 'absolute',
@@ -164,7 +174,7 @@ const styles = StyleSheet.create({
   txtInput: {
     flex: 1,
     padding: 10,
-    backgroundColor: '#CCC9C9',
+    backgroundColor: '#B3E9F2',
     opacity: 0.8,
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
@@ -179,22 +189,13 @@ const styles = StyleSheet.create({
     marginRight: 10,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    backgroundColor: '#E4E5E7',
+    backgroundColor: '#B6E9F2',
   },
   boxCenter: {
     justifyContent: 'center',
     width: '100%',
     alignSelf: 'center',
     alignItems: 'center',
-  },
-
-  boxListItem: {
-    flex: 1,
-    flexDirection: 'row',
-    paddingLeft: 20,
-    marginTop: 20,
-    marginBottom: 20,
-    width: 400,
   },
 });
 

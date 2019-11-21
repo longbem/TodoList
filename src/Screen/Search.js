@@ -1,16 +1,79 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
   Text,
   TextInput,
   TouchableOpacity,
+  FlatList,
+  AsyncStorage,
 } from 'react-native';
 import {Container, Header, Left, Body, Right} from 'native-base';
+import ItemCard from './ItemCard';
 
 import Icon from 'react-native-vector-icons/AntDesign';
 
+// // list item
+renderItemList = item => <ItemCard item={item} />;
+
+// list
+renderList = props => {
+  console.log('props: ', props);
+
+  const [getData, setData] = useState();
+  const [check, setCheck] = useState(false);
+  const [loading, setLoad] = useState(true);
+  // Get data
+  useEffect(() => {
+    setLoad(true);
+    (async function _retrieveData() {
+      try {
+        const value = await AsyncStorage.getItem('keyData');
+        console.log('value', value);
+        const getValues = JSON.parse(value);
+        setData(getValues);
+        console.log('data: ', getData);
+      } catch (error) {
+        console.log('error');
+      }
+    })();
+  }, []);
+
+  return (
+    <FlatList
+      data={getData}
+      renderItem={renderItemList}
+      keyExtractor={item => item.task}
+    />
+  );
+};
+
 const Search = props => {
+  const [getData, setData] = useState();
+  const [check, setCheck] = useState(false);
+  const [loading, setLoad] = useState(true);
+  // Get data
+  useEffect(() => {
+    setLoad(true);
+    (async function _retrieveData() {
+      try {
+        const value = await AsyncStorage.getItem('keyData');
+        console.log('value', value);
+        const getValues = JSON.parse(value);
+        setData(getValues);
+        console.log('data: ', getData);
+      } catch (error) {
+        console.log('error');
+      }
+    })();
+  }, []);
+
+  onSearch = txt => {
+    console.log('getData: ', getData);
+    let filteredData = getData.filter(data => data.task.includes(txt));
+    setData(filteredData);
+  };
+
   return (
     <Container>
       <Header
@@ -23,11 +86,22 @@ const Search = props => {
         </Left>
         <Body>
           <View style={StyleSheet.boxInput}>
-            <TextInput style={styles.TextInput} placeholder={'Tìm kiếm'} />
+            <TextInput
+              style={styles.TextInput}
+              placeholder={'Tìm kiếm'}
+              onChangeText={search => onSearch(search)}
+            />
           </View>
         </Body>
         <Right></Right>
       </Header>
+      <View>
+        <FlatList
+          data={getData}
+          renderItem={renderItemList}
+          keyExtractor={item => item.task}
+        />
+      </View>
     </Container>
   );
 };

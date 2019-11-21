@@ -7,7 +7,7 @@ const ButtonAdd = props => {
     <TouchableOpacity
       onPress={() => props.navigation.navigate('Add')}
       style={{
-        backgroundColor: '#D87DE8',
+        backgroundColor: '#5BDEF5',
         width: 60,
         height: 60,
         borderRadius: 30,
