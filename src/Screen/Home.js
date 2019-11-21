@@ -35,7 +35,7 @@ import {
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import ButtonAdd from '../Component/ButtonAdd';
-import ItemCard from './ItemCard';
+import ItemCard from '../Component/ItemCard';
 import ListTodo from '../Component/FlatList';
 import data from '../../Database/Database';
 
@@ -66,13 +66,11 @@ renderList = props => {
   }, [props.navigation.state.params ? props.navigation.state.params : null]);
 
   return (
-    <ScrollView>
-      <FlatList
-        data={getData}
-        renderItem={renderItemList}
-        keyExtractor={item => item.task}
-      />
-    </ScrollView>
+    <FlatList
+      data={getData}
+      renderItem={renderItemList}
+      keyExtractor={item => item.task}
+    />
   );
 };
 
@@ -113,6 +111,7 @@ const Home = props => {
           </TouchableOpacity>
         </Right>
       </Header>
+
       <View
         style={{
           padding: 20,
@@ -149,8 +148,10 @@ const Home = props => {
           <Text style={{padding: 10, fontSize: 20}}>List Todo</Text>
         </View>
       </View>
-      <View>{renderList(props)}</View>
-      {/* <ListTodo navigation={props} /> */}
+      <ScrollView>
+        <View>{renderList(props)}</View>
+        {/* <ListTodo navigation={props} /> */}
+      </ScrollView>
       <View
         style={{
           position: 'absolute',

@@ -9,7 +9,7 @@ import {
   AsyncStorage,
 } from 'react-native';
 import {Container, Header, Left, Body, Right} from 'native-base';
-import ItemCard from './ItemCard';
+import ItemCard from '../Component/ItemCard';
 
 import Icon from 'react-native-vector-icons/AntDesign';
 

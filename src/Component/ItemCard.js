@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import {CheckBox, ListItem, Body} from 'native-base';
+import {CheckBox} from 'react-native-elements';
 
 // data
 import data from '../../Database/Database';
@@ -16,30 +16,24 @@ const ItemCard = ({item}) => {
     <TouchableOpacity>
       <View
         style={{
+          flex: 1,
           borderBottomColor: '#DDD',
           borderBottomWidth: 1,
           flexDirection: 'row',
-          padding: 20,
+          //padding: 20,
           marginLeft: 10,
           marginRight: 10,
         }}>
         <CheckBox
-          style={{left: 0}}
-          onPress={checked => setChecked(!checked)}
+          onPress={() => setChecked({checked: !checked})}
+          // checkedIcon="dot-circle-o"
+          // uncheckedIcon="circle-o"
           checked={checked}
         />
 
-        <Text style={{fontSize: 20, marginLeft: 30}}>{item.item.task}</Text>
+        <Text style={{fontSize: 20, marginTop: 14}}>{item.item.task}</Text>
       </View>
     </TouchableOpacity>
-    //   <View style={{ paddingRight: 10 }}>
-    //       <ListItem>
-    //
-    //           <Body>
-    //               <Text style={{ fontSize: 20, marginLeft: 20 }}>{item.item.task}</Text>
-    //           </Body>
-    //       </ListItem>
-    //   </View>
   );
 };
 
