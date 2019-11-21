@@ -9,25 +9,34 @@ const ItemCard = ({item}) => {
   //console.log('item: ', item.item.checked);
 
   const [checked, setChecked] = useState(item.item.checked);
+  const [todos, setTodo] = useState();
 
-  console.log('check: ', !checked);
+  // toggleDone
+  toggleDone = item => {
+    todos = data;
+    todos = todos.map(todo => {
+      if (todo.task) {
+        todos.checked = !todo.checked;
+      }
+      return todo;
+    });
+    setTodo(todos);
+  };
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={toggleDone}>
       <View
         style={{
           flex: 1,
           borderBottomColor: '#DDD',
           borderBottomWidth: 1,
           flexDirection: 'row',
-          //padding: 20,
-          marginLeft: 10,
           marginRight: 10,
         }}>
         <CheckBox
-          onPress={() => setChecked({checked: !checked})}
-          // checkedIcon="dot-circle-o"
-          // uncheckedIcon="circle-o"
+          onPress={() => setChecked(checked => !checked)}
+          checkedIcon="dot-circle-o"
+          uncheckedIcon="circle-o"
           checked={checked}
         />
 

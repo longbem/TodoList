@@ -74,19 +74,6 @@ renderList = props => {
   );
 };
 
-// toggleDone
-toggleDone = item => {
-  const [todos, setTodo] = useState();
-  todos = data;
-  todos = todos.map(todo => {
-    if (todo.task) {
-      todos.checked = !todo.checked;
-    }
-    return todo;
-  });
-  setTodo(todos);
-};
-
 // screen home
 const Home = props => {
   return (
