@@ -47,7 +47,6 @@ renderList = props => {
   console.log('props: ', props);
 
   const [getData, setData] = useState();
-  const [check, setCheck] = useState(false);
   const [loading, setLoad] = useState(true);
   // Get data
   useEffect(() => {
@@ -66,11 +65,13 @@ renderList = props => {
   }, [props.navigation.state.params ? props.navigation.state.params : null]);
 
   return (
-    <FlatList
-      data={getData}
-      renderItem={renderItemList}
-      keyExtractor={item => item.task}
-    />
+    <View style={{paddingLeft: 10, paddingRight: 10}}>
+      <FlatList
+        data={getData}
+        renderItem={renderItemList}
+        keyExtractor={item => item.task}
+      />
+    </View>
   );
 };
 

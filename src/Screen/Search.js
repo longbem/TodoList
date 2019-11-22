@@ -50,8 +50,8 @@ renderList = props => {
 
 const Search = props => {
   const [getData, setData] = useState();
-  const [check, setCheck] = useState(false);
   const [loading, setLoad] = useState(true);
+  let data2;
   // Get data
   useEffect(() => {
     setLoad(true);
@@ -61,7 +61,6 @@ const Search = props => {
         console.log('value', value);
         const getValues = JSON.parse(value);
         setData(getValues);
-        console.log('data: ', getData);
       } catch (error) {
         console.log('error');
       }
@@ -69,9 +68,17 @@ const Search = props => {
   }, []);
 
   onSearch = txt => {
-    console.log('getData: ', getData);
+    console.log('ok log');
+    setLoad(true);
+    console.log('data2: ', data2);
+
     let filteredData = getData.filter(data => data.task.includes(txt));
-    setData(filteredData);
+    if (txt) {
+      setData(filteredData);
+    }
+    console.log('getData: ', getData);
+
+    console.log('filteredData: ', filteredData);
   };
 
   return (

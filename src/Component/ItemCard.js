@@ -31,7 +31,6 @@ const ItemCard = ({item}) => {
           borderBottomColor: '#DDD',
           borderBottomWidth: 1,
           flexDirection: 'row',
-          marginRight: 10,
         }}>
         <CheckBox
           onPress={() => setChecked(checked => !checked)}
